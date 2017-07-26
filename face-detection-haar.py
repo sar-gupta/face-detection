@@ -1,8 +1,12 @@
+import imageio
 import cv2
 
 stream = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('/home/sarthak/opencv/data/haarcascades/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier('/home/sarthak/opencv/data/haarcascades/haarcascade_eye.xml')
+
+images = []
+
 while True:
     ret, frame = stream.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
@@ -14,9 +18,13 @@ while True:
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex, ey, ew, eh) in eyes:
             cv2.rectangle(roi_color, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
-
+    RGB_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    images.append(RGB_img)
     cv2.imshow('video', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+# for long sessions, imageio will crash. Refer to imageio documentation regarding how to store longer gifs.
+imageio.mimsave('getting-started-opencv.gif', images)
 stream.release()
 cv2.destroyAllWindows()

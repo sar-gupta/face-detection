@@ -25,6 +25,8 @@ while True:
         break
 
 # for long sessions, imageio will crash. Refer to imageio documentation regarding how to store longer gifs.
-imageio.mimsave('getting-started-opencv.gif', images)
+
 stream.release()
 cv2.destroyAllWindows()
+
+imageio.mimsave('getting-started-opencv.gif', images)
